@@ -625,17 +625,39 @@
 <footer>
   <span>📧&💬 <a href="mailto:laafeiakresearch@gmail.com">Contact Us and share suggestion</a></span>
   <span>Try This also👉<a href="https://laafeiakresearch.github.io/LinguaPDF/" target="_blank">📄 LinguaPDF</a></span>
-    <button onclick="pay()">Support ❤️</button>
-  <div id="qrbox" style="display:none; margin-top:20px;">
-   
-    <p>UPI ID: chalaagaya@ptyes</p>
+<button onclick="showSupport()">❤️ Support</button>
+  
+
+    //
+    
+<div id="supportBox" style="display:none; margin-top:20px;">
+  <p>Support this project</p>
+
+  <input id="upiId" value="yourupi@bank" readonly>
+
+  <button onclick="copyUPI()">Copy UPI ID</button>
+
+  <p id="copiedMsg" style="color:green; display:none;">UPI ID copied!</p>
+</div>    
+    //
 </div>
 
   
 </footer>
 
 <script>
- 
+
+  // support
+  function showSupport(){
+  document.getElementById("supportBox").style.display="block";
+}
+
+function copyUPI(){
+  const upi = document.getElementById("upiId");
+  navigator.clipboard.writeText(upi.value);
+
+  document.getElementById("copiedMsg").style.display="block";
+}
 /* ════════ VOCAB DB ════════ */
 const VOCAB_SET = [
  

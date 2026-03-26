@@ -728,6 +728,8 @@
           <option value="C1">C1</option><option value="C2">C2</option>
         </select>
         <button id="quizThisLevelBtn" class="btn-green" style="display:none;">📝 Quiz this level</button>
+        <button id="quizThisPageBtn" class="btn-mid" style="display:none;">📄 Quiz this page</button>
+
       </div>
 
       <div id="vocabListContainer" class="vocab-list-container">
@@ -4358,14 +4360,35 @@ document.getElementById('vocabLevelPicker').addEventListener('change', e => {
   else {
     document.getElementById('vocabListContainer').style.display = 'none';
     document.getElementById('quizThisLevelBtn').style.display = 'none';
+    document.getElementById('quizThisPageBtn').style.display = 'none';
+
   }
 });
 
+  // ─── Quiz This Page ───Add a helper function + event listener.
+function getCurrentPageWords() {
+  const filtered = getFiltered();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const safePage = Math.min(currentPage, totalPages);
+  const start = (safePage - 1) * pageSize;
+  return filtered.slice(start, start + pageSize);
+}
+
+document.getElementById('quizThisPageBtn').addEventListener('click', () => {
+  if (!currentSelectedLevel) return;
+  const pageWords = getCurrentPageWords();
+  if (!pageWords.length) { alert('No words on this page to quiz!'); return; }
+  switchTab('quiz');
+  startQuizWithVocab(pageWords);
+});
+  // over
 function showVocabForLevel(level) {
   currentSelectedLevel = level;
   currentFullVocabList = VOCAB_SET.filter(w => w.level === level);
   document.getElementById('currentLevelTitle').textContent = `${level} Vocabulary (${currentFullVocabList.length} words)`;
   document.getElementById('quizThisLevelBtn').style.display = 'inline-flex';
+  document.getElementById('quizThisPageBtn').style.display = 'inline-flex';
+
   currentPage = 1;
   pageSize = parseInt(document.getElementById('pageSizeSelect').value, 10);
   document.getElementById('vocabSearchInput').value = '';
